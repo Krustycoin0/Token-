@@ -9,7 +9,7 @@
     padding: 20px;
     margin-bottom: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    min-width: 300px; /* Set a minimum width */
+     min-width: 300px;
 }
 
 .token-card:hover {
