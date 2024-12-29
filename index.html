@@ -68,6 +68,26 @@
         </header>
 
         <main class="container mx-auto py-8">
+           <section class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">Add Advisors</h2>
+                <form @submit.prevent="addAdvisor">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="advisorName">Advisor Name:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="advisorName" type="text" v-model="newAdvisor.name" required="">
+                    </div>
+                    <div class="mt-6">
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Advisor</button>
+                    </div>
+                </form>
+                <div class="alert alert-success" v-if="advisorMessage">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>{{ advisorMessage }}</span>
+                </div>
+                <div class="alert alert-error" v-if="advisorError">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>{{ advisorError }}</span>
+                </div>
+            </section>
             <section class="mb-8">
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
@@ -93,21 +113,21 @@
             <section>
                 <h2 class="text-2xl font-bold mb-4">Top Tokens</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="token-card" v-for="token in tokens" :key="token.id">
-                    <img :src="token.logo" :alt="token.name + ' Logo'" class="w-16 h-16 rounded-full mb-4">
-                    <h3 class="text-lg font-bold">#{{ token.rank }} {{ token.name }}</h3>
-                    <p>Symbol: {{ token.symbol }}</p>
-                    <p>Price: ${{ token.price }}</p> 
-                    <p>Market Cap: ${{ token.marketCap }}</p>
-                    <p>Description: {{ token.description }}</p>
-                     <p v-if="token.presale">Presale: {{ token.presaleInfo }}</p>
-                    <div v-if="token.advisor && token.advisor.length > 0">
-                        <h4 class="font-semibold mt-2">Advisors</h4>
-                        <ul>
-                            <li v-for="advisor in token.advisor" :key="advisor.id">- {{ advisor.name }}</li>
-                        </ul>
+                    <div class="token-card" v-for="token in tokens" :key="token.id">
+                      <img :src="token.logo" :alt="token.name + ' Logo'" class="w-16 h-16 rounded-full mb-4">
+                        <h3 class="text-lg font-bold">#{{ token.rank }} {{ token.name }}</h3>
+                        <p>Symbol: {{ token.symbol }}</p>
+                        <p>Price: ${{ token.price }}</p>
+                         <p>Market Cap: ${{ token.marketCap }}</p>
+                        <p>Description: {{ token.description }}</p>
+                         <p v-if="token.presale">Presale: {{ token.presaleInfo }}</p>
+                        <div v-if="token.advisor && token.advisor.length > 0">
+                            <h4 class="font-semibold mt-2">Advisors</h4>
+                            <ul>
+                                <li v-for="advisor in token.advisor" :key="advisor.id">- {{ advisor.name }}</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
                 </div>
 
                 <div class="text-center" v-if="loading">Loading tokens...</div>
@@ -119,7 +139,7 @@
 
             <section>
                 <h2 class="text-2xl font-bold mb-4">Add New Token</h2>
-                <form @submit.prevent="addToken"> 
+                <form @submit.prevent="addToken">
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenName">Token Name:</label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenName" type="text" v-model="newToken.name" required="">
@@ -148,10 +168,10 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="isPresale">Presale:</label>
                         <input type="checkbox" id="isPresale" v-model="newToken.presale">
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="presaleInfo">Presale Information:</label>
+                   <div class="mb-4">
+                       <label class="block text-gray-700 text-sm font-bold mb-2" for="presaleInfo">Presale Information:</label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="presaleInfo" type="text" v-model="newToken.presaleInfo">
-                    </div>
+                  </div>
                     <div class="mt-6">
                         <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Token</button>
                     </div>
@@ -165,34 +185,11 @@
                     <span>{{ tokenError }}</span>
                 </div>
             </section>
-
-            <section>
-                <h2 class="text-2xl font-bold mb-4">Add Advisors</h2>
-                <form @submit.prevent="addAdvisor">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="advisorName">Advisor Name:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="advisorName" type="text" v-model="newAdvisor.name" required="">
-                    </div>
-                    <div class="mt-6">
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Advisor</button>
-                    </div>
-                </form>
-                <div class="alert alert-success" v-if="advisorMessage">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ advisorMessage }}</span>
-                </div>
-                <div class="alert alert-error" v-if="advisorError">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ advisorError }}</span>
-                </div>
-            </section>
         </main>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
