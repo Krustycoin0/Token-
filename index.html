@@ -4,41 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monkey</title>
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
-
-    <!-- Vue.js CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8.0.7/swiper-bundle.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-
-    <!-- Firebase CDN -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
-
-    <!-- Material Icons CDN -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <style>
-        .swiper-slide {
-            height: auto;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8.0.7/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
 </head>
-<body class="bg-gray-100">
+<body>
     <div id="app">
         <header class="bg-gray-800 text-white py-4">
             <div class="container mx-auto flex justify-between items-center">
                 <div class="flex items-center">
-                    <img class="h-12 w-12 mr-2 rounded-full" alt="Monkey Logo" src="https://example.com/monkey_logo.png">
+                    <img src="https://example.com/monkey_logo.png" alt="Monkey Logo" class="h-12 w-12 mr-2 rounded-full">
                     <h1 class="text-2xl font-bold">Monkey</h1>
                 </div>
                 <div>
-                    <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="https://t.me/AImonkeyEA">Contact Us on Telegram</a>
+                    <a href="https://t.me/AImonkeyEA" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Contact Us on Telegram</a>
                 </div>
             </div>
         </header>
@@ -48,19 +29,19 @@
                 <h2 class="text-2xl font-bold mb-4">Add Advisors</h2>
                 <form id="add-advisor-form">
                     <div class="mb-4">
-                        <label for="advisorName" class="block text-gray-700 text-sm font-bold mb-2">Advisor Name:</label>
-                        <input required="" type="text" id="advisorName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="advisorName">Advisor Name:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="advisorName" type="text" required="">
                     </div>
                     <div class="mt-6">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Add Advisor</button>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Advisor</button>
                     </div>
                 </form>
-                <div style="display: none;" id="advisor-success" class="alert alert-success">
-                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <div class="alert alert-success" id="advisor-success" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <span id="advisor-message"></span>
                 </div>
-                <div style="display: none;" id="advisor-error" class="alert alert-error">
-                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <div class="alert alert-error" id="advisor-error" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <span id="advisor-error-message"></span>
                 </div>
             </section>
@@ -85,97 +66,145 @@
                     <div class="swiper-pagination"></div>
                 </div>
             </section>
-
             <section class="mb-8">
                 <h2 class="text-2xl font-bold mb-4">Add Token</h2>
                 <form id="add-token-form">
                     <div class="mb-4">
-                        <label for="tokenName" class="block text-gray-700 text-sm font-bold mb-2">Token Name:</label>
-                        <input required="" type="text" id="tokenName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenName">Token Name:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenName" type="text" required="">
                     </div>
                     <div class="mb-4">
-                        <label for="tokenSymbol" class="block text-gray-700 text-sm font-bold mb-2">Token Symbol:</label>
-                        <input required="" type="text" id="tokenSymbol" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenSymbol">Token Symbol:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenSymbol" type="text" required="">
                     </div>
                     <div class="mb-4">
-                        <label for="tokenLogo" class="block text-gray-700 text-sm font-bold mb-2">Token Logo URL:</label>
-                        <input required="" type="text" id="tokenLogo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenLogo">Token Logo URL:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenLogo" type="text" required="">
                     </div>
                     <div class="mb-4">
-                        <label for="tokenPrice" class="block text-gray-700 text-sm font-bold mb-2">Token Price:</label>
-                        <input required="" step="0.00000001" type="number" id="tokenPrice" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenPrice">Token Price:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenPrice" type="number" step="0.00000001" required="">
                     </div>
                     <div class="mb-4">
-                        <label for="tokenMarketCap" class="block text-gray-700 text-sm font-bold mb-2">Token Market Cap:</label>
-                        <input required="" step="0.01" type="number" id="tokenMarketCap" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenMarketCap">Token Market Cap:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenMarketCap" type="number" step="0.01" required="">
                     </div>
                     <div class="mb-4">
-                        <label for="tokenDescription" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
-                        <textarea id="tokenDescription" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenDescription">Description:</label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenDescription"></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="isPresale" class="block text-gray-700 text-sm font-bold mb-2">Presale:</label>
-                        <input id="isPresale" type="checkbox">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="isPresale">Presale:</label>
+                        <input type="checkbox" id="isPresale">
                     </div>
                     <div class="mb-4">
-                        <label for="presaleInfo" class="block text-gray-700 text-sm font-bold mb-2">Presale Information:</label>
-                        <input type="text" id="presaleInfo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="presaleInfo">Presale Information:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="presaleInfo" type="text">
                     </div>
                     <div class="mt-6">
-                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="submit">Add Token</button>
+                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Token</button>
                     </div>
                 </form>
-                <div style="display: none;" id="token-success" class="alert alert-success">
-                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <div class="alert alert-success" id="token-success" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <span id="token-message"></span>
                 </div>
-                <div style="display: none;" id="token-error" class="alert alert-error">
-                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <div class="alert alert-error" id="token-error" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <span id="token-error-message"></span>
                 </div>
+            </section>
+            <section class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">Token List</h2>
+                <table class="table-auto w-full">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2">Token Name</th>
+                            <th class="px-4 py-2">Token Symbol</th>
+                            <th class="px-4 py-2">Token Price</th>
+                            <th class="px-4 py-2">Token Market Cap</th>
+                            <th class="px-4 py-2">Description</th>
+                            <th class="px-4 py-2">Presale</th>
+                            <th class="px-4 py-2">Presale Information</th>
+                        </tr>
+                    </thead>
+                    <tbody id="token-list">
+                    </tbody>
+                </table>
             </section>
         </main>
     </div>
 
     <script>
-        // Initialize Firebase
-        var firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        // Initialize Swiper
-        var swiper = new Swiper(".mySwiper", {
-            pagination: {
-                el: ".swiper-pagination",
+        const app = new Vue({
+            el: '#app',
+            data: {
+                tokens: [],
+                advisors: []
             },
-        });
-
-        // Add Advisor Form Submission
-        document.getElementById("add-advisor-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            var advisorName = document.getElementById("advisorName").value;
-            // Add advisor logic here
-        });
-
-        // Add Token Form Submission
-        document.getElementById("add-token-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            var tokenName = document.getElementById("tokenName").value;
-            var tokenSymbol = document.getElementById("tokenSymbol").value;
-            var tokenLogo = document.getElementById("tokenLogo").value;
-            var tokenPrice = document.getElementById("tokenPrice").value;
-            var tokenMarketCap = document.getElementById("tokenMarketCap").value;
-            var tokenDescription = document.getElementById("tokenDescription").value;
-            var isPresale = document.getElementById("isPresale").checked;
-            var presaleInfo = document.getElementById("presaleInfo").value;
-            // Add token logic here
-        });
-    </script>
-</body>
-</html>
+            mounted() {
+                this.getTokens();
+                this.getAdvisors();
+                this.swiper = new Swiper('.mySwiper', {
+                    pagination: {
+                        el: '.swiper-pagination',
+                    },
+                });
+            },
+            methods: {
+                getTokens() {
+                    axios.get('https://api.example.com/tokens')
+                        .then(response => {
+                            this.tokens = response.data;
+                            this.renderTokenList();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                },
+                getAdvisors() {
+                    axios.get('https://api.example.com/advisors')
+                        .then(response => {
+                            this.advisors = response.data;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                },
+                renderTokenList() {
+                    const tokenList = document.getElementById('token-list');
+                    tokenList.innerHTML = '';
+                    this.tokens.forEach(token => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="px-4 py-2">${token.name}</td>
+                            <td class="px-4 py-2">${token.symbol}</td>
+                            <td class="px-4 py-2">${token.price}</td>
+                            <td class="px-4 py-2">${token.marketCap}</td>
+                            <td class="px-4 py-2">${token.description}</td>
+                            <td class="px-4 py-2">${token.presale ? 'Yes' : 'No'}</td>
+                            <td class="px-4 py-2">${token.presaleInfo}</td>
+                        `;
+                        tokenList.appendChild(row);
+                    });
+                },
+                addToken(event) {
+                    event.preventDefault();
+                    const tokenName = document.getElementById('tokenName').value;
+                    const tokenSymbol = document.getElementById('tokenSymbol').value;
+                    const tokenLogo = document.getElementById('tokenLogo').value;
+                    const tokenPrice = document.getElementById('tokenPrice').value;
+                    const tokenMarketCap = document.getElementById('tokenMarketCap').value;
+                    const tokenDescription = document.getElementById('tokenDescription').value;
+                    const isPresale = document.getElementById('isPresale').checked;
+                    const presaleInfo = document.getElementById('presaleInfo').value;
+                    axios.post('https://api.example.com/tokens', {
+                        name: tokenName,
+                        symbol: tokenSymbol,
+                        logo: tokenLogo,
+                        price: tokenPrice,
+                        marketCap: tokenMarketCap,
+                        description: tokenDescription,
+                        presale: isPresale,
+                        presaleInfo: presaleInfo
+# index.html
