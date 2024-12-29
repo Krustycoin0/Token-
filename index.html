@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monkey</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8.0.7/swiper-bundle.min.css">
-     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8.0.7/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+      <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.4/dist/web3.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -27,53 +24,6 @@
 
         <main class="container mx-auto py-8">
             <section class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">Add Advisors</h2>
-                <form id="add-advisor-form">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="advisorName">Advisor Name:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="advisorName" type="text" required="">
-                    </div>
-                    <div class="mt-6">
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Advisor</button>
-                    </div>
-                </form>
-                <div class="alert alert-success" id="advisor-success" style="display: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span id="advisor-message"></span>
-                </div>
-                <div class="alert alert-error" id="advisor-error" style="display: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span id="advisor-error-message"></span>
-                </div>
-            </section>
-            <section class="mb-8">
-                <div class="swiper mySwiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-6">
-                                <h2 class="text-3xl font-bold text-white mb-4">Promote Your Coin</h2>
-                                <p class="text-white">Get featured on our platform and reach a wider audience of crypto enthusiasts.</p>
-                                <button class="bg-white text-purple-500 font-bold py-2 px-4 rounded mt-4">Learn More</button>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="bg-gradient-to-r from-blue-500 to-green-500 rounded-lg p-6">
-                                <h2 class="text-3xl font-bold text-white mb-4">Discover New Tokens</h2>
-                                <p class="text-white">Explore the latest and most promising crypto tokens in the market.</p>
-                                <button class="bg-white text-blue-500 font-bold py-2 px-4 rounded mt-4">Explore Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
-            </section>
-               <section class="mb-8">
-                  <h2 class="text-2xl font-bold mb-4">Promoted Tokens</h2>
-                    <div id="promoted-tokens" class="flex overflow-x-auto space-x-4">
-                        <!-- Promoted token cards here -->
-                    </div>
-               </section>
-             <section class="mb-8">
                 <h2 class="text-2xl font-bold mb-4">Add Token</h2>
                 <form id="add-token-form">
                     <div class="mb-4">
@@ -121,14 +71,15 @@
                     <span id="token-error-message"></span>
                 </div>
             </section>
-             <section class="mb-8">
+            <section class="mb-8">
                 <h2 class="text-2xl font-bold mb-4">Token List</h2>
-               <div id="token-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div id="token-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
                 </div>
             </section>
         </main>
     </div>
-  <script src="script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
