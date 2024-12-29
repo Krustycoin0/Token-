@@ -11,21 +11,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 </head>
 <body>
     <div id="app">
         <header class="bg-gray-800 text-white py-4">
             <div class="container mx-auto flex justify-between items-center">
                 <h1 class="text-2xl font-bold">Monkey</h1>
-                <div>
-                    <!-- Authentication buttons will be handled by Vue -->
-                    <button v-show="!user" @click="login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Login with Google
-                    </button>
-                    <button v-show="user" @click="logout" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                        Logout
-                    </button>
+                 <div>
+                  <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Contact Us on Telegram</a>
                 </div>
             </div>
         </header>
@@ -34,7 +28,7 @@
 
             <!-- Token Listing Section -->
             <section>
-                <h2 class="text-2xl font-bold mb-4">Featured Tokens</h2>
+                <h2 class="text-2xl font-bold mb-4">Top Tokens</h2>
                 <div v-if="loadingTokens" class="text-center">
                     Loading tokens...
                 </div>
@@ -42,9 +36,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span>{{ error }}</span>
                 </div>
-                <div v-else v-for="(token, index) in tokens" :key="index" class="token-card">
-                    <h3 class="text-lg font-bold">{{ token.name }}</h3>
+                 <div v-else v-for="(token, index) in tokens" :key="index" class="token-card">
+                    <h3 class="text-lg font-bold">#{{ token.rank }} {{ token.name }}</h3>
                     <p>Symbol: {{ token.symbol }}</p>
+                    <p>Price: {{ token.price }}</p>
                     <p>Description: {{ token.description }}</p>
                     <p v-show="token.isPresale">Presale: {{ token.presaleInfo }}</p>
                     <div v-if="token.advisors && token.advisors.length > 0">
@@ -70,7 +65,7 @@
                              <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenDescription">Description:</label>
                              <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenDescription" v-model="newToken.description"></textarea>
                          </div>
-                         <div class="mb-4">
+                        <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="isPresale">Presale:</label>
                            <input type="checkbox" id="isPresale" v-model="newToken.isPresale">
                          </div>
@@ -125,4 +120,4 @@
     </div>
     <script src="script.js"></script>
 </body>
-  </html>
+</html>
