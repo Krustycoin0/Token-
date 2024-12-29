@@ -23,83 +23,59 @@ const app = new Vue({
         error: null
     },
     mounted() {
-        // Initialize Firebase
-         const firebaseConfig = {
-            apiKey: "YOUR_FIREBASE_API_KEY",
-            authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-            projectId: "YOUR_FIREBASE_PROJECT_ID",
-            storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
-            appId: "YOUR_FIREBASE_APP_ID"
-        };
-        firebase.initializeApp(firebaseConfig);
 
-        // Initialize authentication state listener
-        firebase.auth().onAuthStateChanged(user => {
-            this.user = user ? user : null;
-            console.log('User status changed:', this.user);
-        });
-
-        // Load tokens from database (Firebase)
+        // Load tokens from database (example with mock data)
         this.loadTokens();
+          const adminLogin = prompt('Enter admin password:');
 
+        if(adminLogin === 'admin123'){
+            this.user = true;
+         }else if(adminLogin){
+           this.user = false;
+             this.error = "Wrong password, access denied!"
+        }
     },
     methods: {
-        login() {
-             // Firebase UI Login With Google
-            const provider = new firebase.auth.GoogleAuthProvider();
-             firebase.auth().signInWithPopup(provider)
-                 .then(result => {
-                   this.user = result.user
-                 })
-                .catch(error => {
-                  this.error = error.message;
-                   console.log('Login Error', error)
-               });
-
-         },
-        logout() {
-            firebase.auth().signOut();
-        },
+          logout() {
+            this.user = null;
+          },
         async loadTokens() {
            try{
-              const db = firebase.firestore();
-               const tokensCollection = await db.collection('tokens').get();
-
-               if(!tokensCollection.empty){
-                 this.tokens = tokensCollection.docs.map(doc => {
-                    const data = doc.data()
-                     return {id: doc.id, ...data};
-                 });
-                   this.loadingTokens = false;
-               }else {
-                 this.tokens = [];
-                this.loadingTokens = false;
-               }
-
+           // Example of mock data like CoinBoom or Top 100
+             this.tokens = [
+                    { rank: 1, name: 'Bitcoin', symbol: 'BTC', price: '$42,000', description: 'The original cryptocurrency.', advisors: ['Satoshi N.']},
+                    { rank: 2, name: 'Ethereum', symbol: 'ETH', price: '$2,200', description: 'A platform for decentralized applications.', advisors: ['Vitalik B.']},
+                    { rank: 3, name: 'Tether', symbol: 'USDT', price: '$1.00', description: 'A stablecoin pegged to the US dollar.' , advisors: ['John S.','Mark T.']},
+                    { rank: 4, name: 'Binance Coin', symbol: 'BNB', price: '$300', description: 'The native token of Binance exchange.' , advisors: []},
+                    { rank: 5, name: 'Cardano', symbol: 'ADA', price: '$0.50', description: 'A proof-of-stake blockchain platform.', advisors: ['Charles H.']},
+                     { rank: 6, name: 'Ripple', symbol: 'XRP', price: '$0.60', description: 'A digital payment protocol.', advisors: []},
+                     { rank: 7, name: 'Solana', symbol: 'SOL', price: '$100', description: 'A high-performance blockchain.', advisors: []},
+                     { rank: 8, name: 'Polkadot', symbol: 'DOT', price: '$7.00', description: 'A multichain network.', advisors: []},
+                     { rank: 9, name: 'Dogecoin', symbol: 'DOGE', price: '$0.08', description: 'A meme-inspired cryptocurrency.', advisors: []},
+                     { rank: 10, name: 'Litecoin', symbol: 'LTC', price: '$70', description: 'A peer-to-peer internet currency.', advisors: []},
+                     { rank: 11, name: 'Shiba Inu', symbol: 'SHIB', price: '$0.00001', description: 'A meme token.', advisors: []},
+                ];
+               this.loadingTokens = false;
            }catch(error){
-            this.error = error.message;
-            this.loadingTokens = false;
-             console.log('Load Tokens Error: ', error)
+              this.error = error.message;
+               this.loadingTokens = false;
+                console.log('Load Tokens Error: ', error)
           }
         },
          async addToken(){
            try {
-              const db = firebase.firestore();
               const tokenToAdd = {...this.newToken}
-
-              await db.collection('tokens').add(tokenToAdd);
-
+              tokenToAdd.rank = this.tokens.length + 1;
+              this.tokens.push(tokenToAdd)
                this.tokenMessage = 'Token Added Successfully'
-               this.newToken = {
+                this.newToken = {
                     name: null,
                     symbol: null,
                     description: null,
                    isPresale: false,
                     presaleInfo: null
                 };
-               this.loadTokens()
-            }catch(error){
+           }catch(error){
               this.tokenError = error.message;
                console.log("Add Token Error: ", error)
            }
@@ -110,25 +86,18 @@ const app = new Vue({
          },
        async addAdvisor(){
            try {
-               const db = firebase.firestore();
-              const advisorToAdd = {...this.newAdvisor};
-             const tokensCollection = await db.collection('tokens').get();
-
-               if(!tokensCollection.empty){
-                   const firstToken = tokensCollection.docs[0];
-
-                   const advisors = firstToken.data().advisors || [];
-
-                    advisors.push(advisorToAdd.name);
-                    await db.collection('tokens').doc(firstToken.id).update({ advisors });
-                   this.advisorMessage = "Advisor Added Successfully";
-                   this.newAdvisor = {name: null};
-                   this.loadTokens()
-                }
-             }catch(error){
-                this.advisorError = error.message;
-                 console.log('Add Advisor Error: ', error)
-            }
+            const advisorToAdd = {...this.newAdvisor};
+            if (this.tokens.length > 0) {
+                 this.tokens[0].advisors.push(advisorToAdd.name);
+                this.advisorMessage = "Advisor Added Successfully";
+                this.newAdvisor = {name: null};
+            }else{
+                 this.advisorError = "Please add a token first"
+           }
+         }catch(error){
+            this.advisorError = error.message;
+               console.log('Add Advisor Error: ', error)
+          }
              setTimeout(() => {
                 this.advisorMessage = null;
                 this.advisorError = null;
