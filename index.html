@@ -3,89 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monkey</title>
+    <title>Monkey - Crypto Token Explorer</title>
+      <meta name="description" content="Discover new crypto tokens and presales. Add your tokens and track their performance.">
+    <link rel="icon" href="https://i.imgur.com/J850k8u.png" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/web3@1.3.4/dist/web3.min.js"></script>
 </head>
-<body>
+<body class="bg-gray-800 text-white">
     <div id="app">
-        <header class="bg-gray-800 text-white py-4">
-            <div class="container mx-auto flex justify-between items-center">
-                <div class="flex items-center">
-                    <img src="https://i.imgur.com/J850k8u.png" alt="Monkey Logo" class="h-12 w-12 mr-2 rounded-full">
-                    <h1 class="text-2xl font-bold">Monkey</h1>
+        <header class="bg-gray-900 py-3 shadow-md">
+             <div class="container mx-auto px-4 flex justify-between items-center">
+                 <a href="/" class="flex items-center">
+                     <img src="https://i.imgur.com/J850k8u.png" alt="Monkey Logo" class="h-10 w-10 mr-2 rounded-full">
+                     <span class="text-xl font-bold">Monkey</span>
+                 </a>
+                 <div>
+                    <a href="https://t.me/AImonkeyEA" target="_blank" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <i class="fab fa-telegram mr-2"></i> Telegram
+                    </a>
                 </div>
-                <div>
-                    <a href="https://t.me/AImonkeyEA" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Contact Us on Telegram</a>
-                </div>
-            </div>
+             </div>
         </header>
 
-        <main class="container mx-auto py-8">
-            <section class="mb-8">
-             <h2 class="text-2xl font-bold mb-4">Add Token</h2>
-            <form id="add-token-form">
-                <div class="mb-4">
-                    <label for="tokenName" class="block text-gray-700 text-sm font-bold mb-2">Token Name:</label>
-                    <input required="" type="text" id="tokenName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="mb-4">
-                    <label for="tokenSymbol" class="block text-gray-700 text-sm font-bold mb-2">Token Symbol:</label>
-                    <input required="" type="text" id="tokenSymbol" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="mb-4">
-                    <label for="tokenLogo" class="block text-gray-700 text-sm font-bold mb-2">Token Logo URL:</label>
-                    <input required="" type="text" id="tokenLogo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                 <div class="mb-4">
-                    <label for="tokenPrice" class="block text-gray-700 text-sm font-bold mb-2">Token Price:</label>
-                    <input required="" step="0.00000001" type="number" id="tokenPrice" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                  </div>
-                 <div class="mb-4">
-                    <label for="tokenMarketCap" class="block text-gray-700 text-sm font-bold mb-2">Token Market Cap:</label>
-                    <input required="" step="0.01" type="number" id="tokenMarketCap" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                  </div>
-                <div class="mb-4">
-                    <label for="tokenDescription" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
-                    <textarea id="tokenDescription" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="isPresale" class="block text-gray-700 text-sm font-bold mb-2">Presale:</label>
-                    <input id="isPresale" type="checkbox">
-                </div>
-                <div class="mb-4">
-                    <label for="presaleInfo" class="block text-gray-700 text-sm font-bold mb-2">Presale Information:</label>
-                    <input type="text" id="presaleInfo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="mt-6">
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="submit">Add Token</button>
-                </div>
-            </form>
-            <div style="display: none;" id="token-success" class="alert alert-success">
-                <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
-                <span id="token-message"></span>
-            </div>
-            <div style="display: none;" id="token-error" class="alert alert-error">
-                <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
-                <span id="token-error-message"></span>
-            </div>
-        </section>
-            <section class="mb-8">
-               <h2 class="text-2xl font-bold mb-4">Promoted Tokens</h2>
-                 <div id="promoted-tokens" class="flex overflow-x-auto space-x-4">
-                        <!-- Promoted token cards here -->
-                  </div>
-            </section>
-            <section class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">Token List</h2>
-                <div id="token-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
+        <main class="container mx-auto py-8 px-4">
+            <section id="add-token-section" class="bg-gray-700 rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-600 pb-2">Add a Token</h2>
+                 <form id="add-token-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                         <div>
+                            <label for="tokenName" class="block text-gray-300 text-sm font-bold mb-2">Token Name:</label>
+                            <input required type="text" id="tokenName" class="bg-gray-800 border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="tokenSymbol" class="block text-gray-300 text-sm font-bold mb-2">Token Symbol:</label>
+                            <input required type="text" id="tokenSymbol" class="bg-gray-800 border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="tokenLogo" class="block text-gray-300 text-sm font-bold mb-2">Token Logo URL:</label>
+                            <input required type="text" id="tokenLogo" class="bg-gray-800 border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:border-blue-500">
+                        </div>
+                       <div>
+                            <label for="tokenPrice" class="block text-gray-300 text-sm font-bold mb-2">Token Price:</label>
+                            <input required step="0.00000001" type="number" id="tokenPrice" class="bg-gray-800 border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:border-blue-500">
+                        </div>
+                      <div>
+                            <label for="tokenMarketCap" class="block text-gray-300 text-sm font-bold mb-2">Market Cap:</label>
+                            <input required step="0.01" type="number" id="tokenMarketCap" class="bg-gray-800 border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="isPresale" class="block text-gray-300 text-sm font-bold mb-2">Presale:</label>
+                            <input type="checkbox" id="isPresale" class="bg-gray-800 border border-gray-600 rounded  focus:outline-none focus:border-blue-500">
+                        </div>
+                       <div>
+                            <label for="presaleInfo" class="block text-gray-300 text-sm font-bold mb-2">Presale Information:</label>
+                            <input type="text" id="presaleInfo" class="bg-gray-800 border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:border-blue-500">
+                        </div>
+                   </div>
+                    <div class="mt-4">
+                        <label for="tokenDescription" class="block text-gray-300 text-sm font-bold mb-2">Description:</label>
+                        <textarea id="tokenDescription" class="bg-gray-800 border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:border-blue-500"></textarea>
+                    </div>
+                    <div class="mt-6">
+                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="submit">Add Token</button>
+                    </div>
+                 </form>
+                <div style="display: none;" id="token-success" class="mt-4 flex items-center bg-green-800 border border-green-600 text-green-300 px-4 py-3 rounded relative" role="alert">
+                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                    <span id="token-message"></span>
+                </div>
+                <div style="display: none;" id="token-error" class="mt-4 flex items-center bg-red-800 border border-red-600 text-red-300 px-4 py-3 rounded relative" role="alert">
+                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                    <span id="token-error-message"></span>
                 </div>
             </section>
+
+
+           <section id="promoted-tokens-section" class="mb-8">
+               <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-600 pb-2">Promoted Tokens</h2>
+                <div id="promoted-tokens" class="flex overflow-x-auto space-x-4">
+                   <!-- Promoted token cards here -->
+                 </div>
+           </section>
+
+
+           <section id="token-list-section">
+                <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-600 pb-2">Token List</h2>
+               <div id="token-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  <!-- Token cards here -->
+               </div>
+           </section>
         </main>
-    </div>
 
- <script src="script.js"></script>
+
+       <footer class="bg-gray-900 text-white py-4 mt-8">
+            <div class="container mx-auto text-center">
+               <p>© 2024 Monkey. All rights reserved.  </p>
+                <a href="https://t.me/AImonkeyEA" class="inline-block text-white hover:text-blue-300" target="_blank"><i class="fab fa-telegram fa-lg mx-2"></i></a>
+              </div>
+       </footer>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
