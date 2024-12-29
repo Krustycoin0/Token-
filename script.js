@@ -23,22 +23,13 @@ const app = new Vue({
         error: null
     },
     mounted() {
+         this.user = true; // Set user to true to show the admin panel
 
         // Load tokens from database (example with mock data)
         this.loadTokens();
-          const adminLogin = prompt('Enter admin password:');
 
-        if(adminLogin === 'admin123'){
-            this.user = true;
-         }else if(adminLogin){
-           this.user = false;
-             this.error = "Wrong password, access denied!"
-        }
     },
     methods: {
-          logout() {
-            this.user = null;
-          },
         async loadTokens() {
            try{
            // Example of mock data like CoinBoom or Top 100
