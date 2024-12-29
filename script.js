@@ -1,20 +1,7 @@
-      // Initialize Firebase
-      const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
-      };
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-
-
-      new Vue({
+ new Vue({
         el: '#app',
         data: {
-            tokens: [], 
+            tokens: [],
             loading: true,
             error: null,
             newToken: {
@@ -26,7 +13,7 @@
                 description: '',
                 presale: false,
                 presaleInfo: '',
-                advisor: [] 
+                advisor: []
             },
             newAdvisor: {
                 name: ''
@@ -38,7 +25,7 @@
         },
         mounted() {
             this.fetchTokens();
-              const swiper = new Swiper(".mySwiper", {
+            const swiper = new Swiper(".mySwiper", {
                 effect: "coverflow",
                  grabCursor: true,
                  centeredSlides: true,
@@ -56,68 +43,187 @@
                });
         },
         methods: {
-            async fetchTokens() {
+            fetchTokens() {
                 this.loading = true;
                 this.error = null;
-                try {
-                    const querySnapshot = await db.collection('tokens').orderBy('rank').get();
-                    this.tokens = querySnapshot.docs.map(doc => {
-                        const data = doc.data();
-                        
-                        return {
-                            id: doc.id,
-                            ...data
-                        };
-                    });
-                } catch (err) {
+               try{
+                    this.tokens = [
+                        {
+                            id: 1,
+                            rank: 1,
+                            name: 'Bitcoin',
+                            symbol: 'BTC',
+                            price: 42000,
+                            marketCap: 823000000000,
+                            description: 'The original cryptocurrency',
+                            logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+                             advisor: [
+                               {id: 1, name: 'Satoshi N.'},
+                             ]
+                        },
+                          {
+                            id: 2,
+                            rank: 2,
+                            name: 'Ethereum',
+                            symbol: 'ETH',
+                             price: 2200,
+                             marketCap: 270000000000,
+                            description: 'A platform for decentralized applications',
+                              logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
+                                advisor: [
+                                 {id: 2, name: 'Vitalik B.'},
+                                ]
+                          },
+                          {
+                            id: 3,
+                             rank: 3,
+                             name: 'Tether',
+                            symbol: 'USDT',
+                            price: 1.00,
+                              marketCap: 83000000000,
+                            description: 'A stablecoin pegged to the US dollar',
+                              logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png",
+                               advisor: [
+                                    {id: 3, name: 'John S.'},
+                                     {id: 4, name: 'Mark T.'}
+                              ]
+                           },
+                          {
+                             id: 4,
+                              rank: 4,
+                              name: 'Binance Coin',
+                              symbol: 'BNB',
+                               price: 300,
+                              marketCap: 47000000000,
+                              description: 'The native token of Binance exchange',
+                              logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
+                               advisor:[]
+                             },
+                          {
+                            id: 5,
+                            rank: 5,
+                            name: 'Cardano',
+                             symbol: 'ADA',
+                            price: 0.50,
+                             marketCap: 17000000000,
+                            description: 'A proof-of-stake blockchain platform',
+                             logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/2010.png",
+                             advisor: [
+                               {id: 5, name: 'Charles H.'},
+                            ]
+                         },
+                           {
+                             id: 6,
+                             rank: 6,
+                              name: 'Ripple',
+                              symbol: 'XRP',
+                             price: 0.60,
+                             marketCap: 31000000000,
+                            description: 'A digital payment protocol',
+                               logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/52.png",
+                             advisor: []
+                             },
+                            {
+                                id: 7,
+                                rank: 7,
+                                name: 'Solana',
+                                symbol: 'SOL',
+                                 price: 100,
+                                  marketCap: 42000000000,
+                                description: 'A high-performance blockchain',
+                                logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+                                advisor: []
+                             },
+                            {
+                                id: 8,
+                               rank: 8,
+                                name: 'Polkadot',
+                                 symbol: 'DOT',
+                                price: 7.00,
+                                 marketCap: 8000000000,
+                               description: 'A multichain network',
+                               logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/6636.png",
+                                 advisor: []
+                            },
+                            {
+                               id: 9,
+                               rank: 9,
+                               name: 'Dogecoin',
+                               symbol: 'DOGE',
+                                price: 0.08,
+                                 marketCap: 11000000000,
+                               description: 'A meme-inspired cryptocurrency',
+                               logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/74.png",
+                              advisor: []
+                            },
+                            {
+                                id: 10,
+                               rank: 10,
+                                name: 'Litecoin',
+                               symbol: 'LTC',
+                              price: 70,
+                               marketCap: 5000000000,
+                               description: 'A peer-to-peer internet currency',
+                               logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/2.png",
+                              advisor: []
+                            },
+                           {
+                               id: 11,
+                               rank: 11,
+                                name: 'Shiba Inu',
+                                symbol: 'SHIB',
+                                 price: 0.00001,
+                                 marketCap: 6000000000,
+                               description: 'A meme token',
+                               logo: "https://s2.coinmarketcap.com/static/img/coins/64x64/5994.png",
+                                advisor: []
+                            },
+                    ];
+                     this.loading = false;
+               } catch(err){
                     this.error = "Error fetching tokens: " + err.message;
-                } finally {
-                    this.loading = false;
-                }
+                     this.loading = false;
+               }
             },
             async addToken() {
                 this.tokenMessage = null;
                 this.tokenError = null;
                 try {
-                    
-                    const docRef = await db.collection('tokens').add(this.newToken);
-                    this.tokenMessage = "Token added successfully!";
-                    this.newToken = { 
-                        name: '',
+                    this.newToken.rank = this.tokens.length + 1;
+                    this.newToken.advisor = [];
+                    this.tokens.push(this.newToken);
+                     this.tokenMessage = "Token added successfully!";
+                    this.newToken = {
+                      name: '',
                         symbol: '',
                         logo: '',
-                        price: 0,
-                        marketCap: 0,
-                        description: '',
+                       price: 0,
+                       marketCap: 0,
+                         description: '',
                         presale: false,
                         presaleInfo: '',
-                        advisor: []
+                         advisor: []
                     };
-                    this.fetchTokens(); 
                 } catch (err) {
                     this.tokenError = "Error adding token: " + err.message;
                 }
             },
             async addAdvisor() {
-                this.advisorMessage = null;
+                 this.advisorMessage = null;
                 this.advisorError = null;
-                try {
-                  const tokensSnapshot = await db.collection('tokens').get();
-                     if (!tokensSnapshot.empty) {
-                        const firstTokenDoc = tokensSnapshot.docs[0];
-                        const advisors = firstTokenDoc.data().advisor || [];
-                           advisors.push(this.newAdvisor);
-                           await db.collection('tokens').doc(firstTokenDoc.id).update({ advisor: advisors });
-                         this.advisorMessage = "Advisor added successfully!";
-                         this.newAdvisor.name = '';
-                        this.fetchTokens();
-                   }else {
-                      this.advisorError = "Please add a token first!";
-                     }
-                   } catch (err) {
-                      this.advisorError = "Error adding advisor: " + err.message;
-                     }
-               },
+               try{
+                   if (this.tokens.length > 0) {
+                    const firstToken = this.tokens[0];
+                    firstToken.advisor.push(this.newAdvisor);
+                     this.advisorMessage = "Advisor added successfully!";
+                    this.newAdvisor = {name: ''};
+                   }else{
+                       this.advisorError = "Please add a token first!";
+                   }
+                }catch (err) {
+                    this.advisorError = "Error adding advisor: " + err.message;
+                }
+            }
         },
       });
     </script>
