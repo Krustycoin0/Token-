@@ -1,0 +1,11 @@
+/* Add your custom styles here if needed */
+body {
+  font-family: sans-serif;
+}
+
+.token-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
