@@ -1,38 +1,43 @@
-/* Glassmorphism for token cards */
 .token-card {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: #fff;
+    border: 1px solid #ddd;
     padding: 20px;
-    margin-bottom: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.token-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+.token-card img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 10px;
 }
 
+.token-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
+.token-card p {
+    font-size: 14px;
+    color: #666;
+}
 
-/* Basic styling for alert messages */
 .alert {
     padding: 10px;
+    border-radius: 10px;
     margin-bottom: 10px;
-    border-radius: 5px;
 }
 
 .alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
+    background-color: #dff0d8;
+    border: 1px solid #8bc34a;
+    color: #3e8e41;
 }
 
 .alert-error {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
+    background-color: #f2dede;
+    border: 1px solid #a94442;
+    color: #a94442;
 }
