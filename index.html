@@ -4,123 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monkey - Your Crypto Hub</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
 </head>
 <body>
     <div id="app">
         <header class="bg-gray-800 text-white py-4">
             <div class="container mx-auto flex justify-between items-center">
                 <div class="flex items-center">
-                    <img src="monkey_logo.jpeg" alt="Monkey Logo" class="h-12 w-12 mr-2 rounded-full"/>
+                    <img class="h-12 w-12 mr-2 rounded-full" alt="Monkey Logo" src="monkey_logo.jpeg">
                     <h1 class="text-2xl font-bold">Monkey</h1>
                 </div>
-                 <div>
-                  <a href="https://t.me/AImonkeyEA" target="_blank" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Contact Us on Telegram</a>
+                <div>
+                    <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="https://t.me/AImonkeyEA">Contact Us on Telegram</a>
                 </div>
             </div>
         </header>
 
         <main class="container mx-auto py-8">
-
-            <!-- Token Listing Section -->
             <section>
                 <h2 class="text-2xl font-bold mb-4">Top Tokens</h2>
-                <div v-if="loadingTokens" class="text-center">
-                    Loading tokens...
-                </div>
-                <div v-if="error" class="alert alert-error">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <div class="text-center" v-if="loading">Loading tokens...</div>
+                <div class="alert alert-error" v-if="error">
+                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
                     <span>{{ error }}</span>
                 </div>
-                <div v-else v-for="(token, index) in tokens" :key="index" class="token-card">
+                <div class="token-card" v-for="token in tokens" :key="token.id">
                     <h3 class="text-lg font-bold">#{{ token.rank }} {{ token.name }}</h3>
                     <p>Symbol: {{ token.symbol }}</p>
                     <p>Price: {{ token.price }}</p>
                     <p>Description: {{ token.description }}</p>
-                    <p v-show="token.isPresale">Presale: {{ token.presaleInfo }}</p>
-                    <div v-if="token.advisors && token.advisors.length > 0">
+                    <p>Presale: {{ token.presaleInfo }}</p>
+                    <div>
                         <h4 class="font-semibold mt-2">Advisors</h4>
-                         <ul>
-                             <li v-for="(advisor, index) in token.advisors" :key="index">- {{ advisor }}</li>
+                        <ul>
+                            <li v-for="advisor in token.advisors" :key="advisor.id">- {{ advisor.name }}</li>
                         </ul>
                     </div>
                 </div>
-                <!-- Add token form will be rendered here -->
-                <div id="addTokenForm" v-show="user">
-                     <h2 class="text-xl font-bold mb-4">Add New Token</h2>
-                    <form @submit.prevent="addToken">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenName">Token Name:</label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenName" v-model="newToken.name" type="text" required>
-                         </div>
-                        <div class="mb-4">
-                             <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenSymbol">Token Symbol:</label>
-                             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenSymbol" v-model="newToken.symbol" type="text" required>
-                        </div>
-                         <div class="mb-4">
-                             <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenDescription">Description:</label>
-                             <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenDescription" v-model="newToken.description"></textarea>
-                         </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="isPresale">Presale:</label>
-                           <input type="checkbox" id="isPresale" v-model="newToken.isPresale">
-                         </div>
-                        <div v-show="newToken.isPresale" class="mb-4">
-                           <label class="block text-gray-700 text-sm font-bold mb-2" for="presaleInfo">Presale Information:</label>
-                           <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="presaleInfo" v-model="newToken.presaleInfo" type="text" />
-                        </div>
-                        <div class="mt-6">
-                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Add Token
-                          </button>
-                        </div>
-                    </form>
-                    <div v-if="tokenMessage" class="alert alert-success">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span>{{ tokenMessage }}</span>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold mb-4">Add New Token</h2>
+                <form @submit.prevent="addToken">
+                    <div class="mb-4">
+                        <label for="tokenName" class="block text-gray-700 text-sm font-bold mb-2">Token Name:</label>
+                        <input required type="text" id="tokenName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="newToken.name">
                     </div>
-                    <div v-if="tokenError" class="alert alert-error">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span>{{ tokenError }}</span>
+                    <div class="mb-4">
+                        <label for="tokenSymbol" class="block text-gray-700 text-sm font-bold mb-2">Token Symbol:</label>
+                        <input required type="text" id="tokenSymbol" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="newToken.symbol">
                     </div>
+                    <div class="mb-4">
+                        <label for="tokenDescription" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+                        <textarea id="tokenDescription" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="newToken.description"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="isPresale" class="block text-gray-700 text-sm font-bold mb-2">Presale:</label>
+                        <input id="isPresale" type="checkbox" v-model="newToken.presale">
+                    </div>
+                    <div class="mb-4">
+                        <label for="presaleInfo" class="block text-gray-700 text-sm font-bold mb-2">Presale Information:</label>
+                        <input type="text" id="presaleInfo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="newToken.presaleInfo">
+                    </div>
+                    <div class="mt-6">
+                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="submit">Add Token</button>
+                    </div>
+                </form>
+                <div class="alert alert-success" v-if="tokenMessage">
+                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                    <span>{{ tokenMessage }}</span>
+                </div>
+                <div class="alert alert-error" v-if="tokenError">
+                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                    <span>{{ tokenError }}</span>
                 </div>
             </section>
-            
-            <section v-show="user">
+
+            <section>
                 <h2 class="text-2xl font-bold mb-4">Add Advisors</h2>
-                <div>
-                   <form @submit.prevent="addAdvisor">
-                      <div class="mb-4">
-                           <label class="block text-gray-700 text-sm font-bold mb-2" for="advisorName">Advisor Name:</label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="advisorName" v-model="newAdvisor.name" type="text" required>
-                        </div>
-                         <div class="mt-6">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Add Advisor
-                          </button>
-                       </div>
-                    </form>
-                      <div v-if="advisorMessage" class="alert alert-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                         <span>{{ advisorMessage }}</span>
-                     </div>
-                     <div v-if="advisorError" class="alert alert-error">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                       <span>{{ advisorError }}</span>
-                     </div>
+                <form @submit.prevent="addAdvisor">
+                    <div class="mb-4">
+                        <label for="advisorName" class="block text-gray-700 text-sm font-bold mb-2">Advisor Name:</label>
+                        <input required type="text" id="advisorName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model="newAdvisor.name">
+                    </div>
+                    <div class="mt-6">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Add Advisor</button>
+                    </div>
+                </form>
+                <div class="alert alert-success" v-if="advisorMessage">
+                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                    <span>{{ advisorMessage }}</span>
                 </div>
-
+                <div class="alert alert-error" v-if="advisorError">
+                    <svg viewBox="0 0 24 24" fill="none" class="stroke-current shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                    <span>{{ advisorError }}</span>
+                </div>
             </section>
-
         </main>
     </div>
-      <script src="script.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                tokens: [],
+                newToken: {
+                    name: '',
+                    symbol: '',
+                    description: '',
+                    presale: false,
+                    presaleInfo: ''
+                },
+                tokenMessage: '',
+                tokenError: '',
+                advisors: [],
+                newAdvisor: {
+                    name: ''
+                },
+                advisorMessage: '',
+                advisorError: '',
+                loading: false,
+                error: ''
+            },
+            mounted() {
+                this.getTokens();
+            },
+            methods: {
+                getTokens() {
+                    this.loading = true;
+                    axios.get('https://api.example.com/tokens')
+                        .then(response => {
+                            this.tokens = response.data;
+                            this.loading = false;
+                        })
+                        .catch(error => {
+                            this.error = error.message;
+                            this.loading = false;
+                        });
+                },
+                addToken() {
+                    axios.post('https://api.example.com/tokens', this.newToken)
+                        .then(response => {
+                            this.tokens.push(response.data);
+                            this.tokenMessage = 'Token added successfully!';
+                            this.newToken = {
+                                name: '',
+                                symbol: '',
+                                description: '',
+                                presale: false,
+                                presaleInfo: ''
+                            };
+                        })
+                        .catch(error => {
+                            this.tokenError = error.message;
+                        });
+                },
+                addAdvisor() {
+                    axios.post('https://api.example.com/advisors', this.newAdvisor)
+                        .then(response => {
+                            this.advisors.push(response.data);
+                            this.advisorMessage = 'Advisor added successfully!';
+                            this.newAdvisor = {
+                                name: ''
+                            };
+                        })
+                        .catch(error => {
+                            this.advisorError = error.message;
+                        });
+                }
+            }
+        });
+    </script>
 </body>
-                            </html>
+</html>
