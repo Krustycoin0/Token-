@@ -3,55 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monkey - Your Crypto Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@2.51.4/dist/full.css" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-/>
-
-    <style>
-        /* Glassmorphism for token cards */
-        .token-card {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .token-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
-        }
-
-
-        
-        /* Basic styling for alert messages */
-        .alert {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
-        }
-
-        .alert-error {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        }
-    </style>
+    <title>Monkey</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8.0.7/swiper-bundle.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
@@ -68,129 +23,108 @@
         </header>
 
         <main class="container mx-auto py-8">
-           <section class="mb-8">
+            <section class="mb-8">
                 <h2 class="text-2xl font-bold mb-4">Add Advisors</h2>
-                <form @submit.prevent="addAdvisor">
+                <form id="add-advisor-form">
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="advisorName">Advisor Name:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="advisorName" type="text" v-model="newAdvisor.name" required="">
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="advisorName" type="text" required>
                     </div>
                     <div class="mt-6">
                         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Advisor</button>
                     </div>
                 </form>
-                <div class="alert alert-success" v-if="advisorMessage">
+                <div class="alert alert-success" id="advisor-success" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ advisorMessage }}</span>
+                    <span id="advisor-message"></span>
                 </div>
-                <div class="alert alert-error" v-if="advisorError">
+                <div class="alert alert-error" id="advisor-error" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ advisorError }}</span>
+                    <span id="advisor-error-message"></span>
                 </div>
             </section>
             <section class="mb-8">
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper">
-                      <div class="swiper-slide">
-                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-6">
-                          <h2 class="text-3xl font-bold text-white mb-4">Promote Your Coin</h2>
-                          <p class="text-white">Get featured on our platform and reach a wider audience of crypto enthusiasts.</p>
-                          <button class="bg-white text-purple-500 font-bold py-2 px-4 rounded mt-4">Learn More</button>
+                        <div class="swiper-slide">
+                            <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-6">
+                                <h2 class="text-3xl font-bold text-white mb-4">Promote Your Coin</h2>
+                                <p class="text-white">Get featured on our platform and reach a wider audience of crypto enthusiasts.</p>
+                                <button class="bg-white text-purple-500 font-bold py-2 px-4 rounded mt-4">Learn More</button>
+                            </div>
                         </div>
-                      </div>
-                      <div class="swiper-slide">
-                        <div class="bg-gradient-to-r from-blue-500 to-green-500 rounded-lg p-6">
-                          <h2 class="text-3xl font-bold text-white mb-4">Discover New Tokens</h2>
-                          <p class="text-white">Explore the latest and most promising crypto tokens in the market.</p>
-                          <button class="bg-white text-blue-500 font-bold py-2 px-4 rounded mt-4">Explore Now</button>
+                        <div class="swiper-slide">
+                            <div class="bg-gradient-to-r from-blue-500 to-green-500 rounded-lg p-6">
+                                <h2 class="text-3xl font-bold text-white mb-4">Discover New Tokens</h2>
+                                <p class="text-white">Explore the latest and most promising crypto tokens in the market.</p>
+                                <button class="bg-white text-blue-500 font-bold py-2 px-4 rounded mt-4">Explore Now</button>
+                            </div>
                         </div>
-                      </div>
-                      </div>
+                    </div>
                     <div class="swiper-pagination"></div>
-                  </div>
+                </div>
             </section>
 
             <section>
                 <h2 class="text-2xl font-bold mb-4">Top Tokens</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="token-card" v-for="token in tokens" :key="token.id">
-                      <img :src="token.logo" :alt="token.name + ' Logo'" class="w-16 h-16 rounded-full mb-4">
-                        <h3 class="text-lg font-bold">#{{ token.rank }} {{ token.name }}</h3>
-                        <p>Symbol: {{ token.symbol }}</p>
-                        <p>Price: ${{ token.price }}</p>
-                         <p>Market Cap: ${{ token.marketCap }}</p>
-                        <p>Description: {{ token.description }}</p>
-                         <p v-if="token.presale">Presale: {{ token.presaleInfo }}</p>
-                        <div v-if="token.advisor && token.advisor.length > 0">
-                            <h4 class="font-semibold mt-2">Advisors</h4>
-                            <ul>
-                                <li v-for="advisor in token.advisor" :key="advisor.id">- {{ advisor.name }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center" v-if="loading">Loading tokens...</div>
-                <div class="alert alert-error" v-if="error">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ error }}</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="token-list">
+                    <!-- Token list will be generated here -->
                 </div>
             </section>
 
             <section>
-                <h2 class="text-2xl font-bold mb-4">Add New Token</h2>
-                <form @submit.prevent="addToken">
+                <h2 class="text-2xl font-bold mb-4">Add Token</h2>
+                <form id="add-token-form">
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenName">Token Name:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenName" type="text" v-model="newToken.name" required="">
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenName" type="text" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenSymbol">Token Symbol:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenSymbol" type="text" v-model="newToken.symbol" required="">
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenSymbol" type="text" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenLogo">Token Logo URL:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenLogo" type="text" v-model="newToken.logo" required="">
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenLogo" type="text" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenPrice">Token Price:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenPrice" type="number" step="0.00000001" v-model="newToken.price" required="">
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenPrice" type="number" step="0.00000001" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenMarketCap">Token Market Cap:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenMarketCap" type="number" step="0.01" v-model="newToken.marketCap" required="">
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenMarketCap" type="number" step="0.01" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="tokenDescription">Description:</label>
-                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenDescription" v-model="newToken.description"></textarea>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tokenDescription"></textarea>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="isPresale">Presale:</label>
-                        <input type="checkbox" id="isPresale" v-model="newToken.presale">
+                        <input type="checkbox" id="isPresale">
                     </div>
-                   <div class="mb-4">
-                       <label class="block text-gray-700 text-sm font-bold mb-2" for="presaleInfo">Presale Information:</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="presaleInfo" type="text" v-model="newToken.presaleInfo">
-                  </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="presaleInfo">Presale Information:</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="presaleInfo" type="text">
+                    </div>
                     <div class="mt-6">
                         <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Token</button>
                     </div>
                 </form>
-                <div class="alert alert-success" v-if="tokenMessage">
+                <div class="alert alert-success" id="token-success" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ tokenMessage }}</span>
+                    <span id="token-message"></span>
                 </div>
-                <div class="alert alert-error" v-if="tokenError">
+                <div class="alert alert-error" id="token-error" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>{{ tokenError }}</span>
+                    <span id="token-error-message"></span>
                 </div>
             </section>
         </main>
     </div>
 
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8.0.7/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
